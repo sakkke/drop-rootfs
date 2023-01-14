@@ -1,0 +1,2 @@
+PARTLABEL=root / ext4 rw 0 1
+PARTLABEL=efi /boot vfat rw

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if ((EUID != 0)); then
+  exec sudo "$0"
+fi
+
+set -euxo pipefail
+
+rm -rf .rootfs
+debootstrap --include=linux-image-5.10.0-20-amd64 bullseye .rootfs
+cp -RT rootfs .rootfs
+(cd .rootfs && bsdtar -Jc *) | pv > drop.tar.xz
