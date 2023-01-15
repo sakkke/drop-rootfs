@@ -7,6 +7,6 @@ fi
 set -euxo pipefail
 
 rm -rf .rootfs
-debootstrap --include=doas,fish,foot,libpam-systemd,linux-image-5.10.0-20-amd64,locales,sway,sway-backgrounds bullseye .rootfs
+debootstrap --include=doas,fish,foot,git,libpam-systemd,linux-image-5.10.0-20-amd64,locales,sway,sway-backgrounds bullseye .rootfs
 cp -RT rootfs .rootfs
 (cd .rootfs && bsdtar -Jc *) | pv > drop.tar.xz
