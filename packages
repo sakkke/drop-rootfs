@@ -6,5 +6,6 @@ git
 libpam-systemd
 linux-image-5.10.0-20-amd64
 locales
+pv
 sway
 sway-backgrounds
