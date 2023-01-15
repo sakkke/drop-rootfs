@@ -1,6 +1,7 @@
 curl
 doas
 fish
+fonts-noto
 foot
 git
 libarchive-tools
