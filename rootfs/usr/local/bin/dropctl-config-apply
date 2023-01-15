@@ -21,7 +21,7 @@ fi
 
 if [ -f /home/"$adm"/.config/drop/executables ]; then
   /usr/sbin/runuser -u "$adm" -- mkdir -p /home/"$adm"/.cache/drop/executables
-  /usr/sbin/runuser -u "$adm" -- bash -c 'cd ~'"$adm"'/.cache/drop/executables && xargs curl -LO' < /home/"$adm"/.config/drop/executables
+  /usr/sbin/runuser -u "$adm" -- bash -c 'cd ~'"$adm"'/.cache/drop/executables && xargs -n 1 curl -LO' < /home/"$adm"/.config/drop/executables
   /usr/sbin/runuser -u "$adm" -- chmod +x /home/"$adm"/.cache/drop/executables/*
 fi
 
