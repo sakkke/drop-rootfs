@@ -8,6 +8,7 @@ libarchive-tools
 libpam-systemd
 linux-image-5.10.0-20-amd64
 locales
+pulseaudio
 pv
 sway
 sway-backgrounds
