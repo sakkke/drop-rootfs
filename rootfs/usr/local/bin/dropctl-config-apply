@@ -16,7 +16,7 @@ if [ -d /home/"$adm"/.config/drop/rootfs ]; then
 fi
 
 if [ -f /home/"$adm"/.config/drop/rootfs/etc/locale.gen ]; then
-  locale-gen
+  /usr/sbin/locale-gen
 fi
 
 if [ -f /home/"$adm"/.config/drop/packages ]; then
