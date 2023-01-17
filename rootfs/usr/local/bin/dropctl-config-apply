@@ -42,6 +42,10 @@ if [ -f /home/"$adm"/.config/drop/go-packages ]; then
   xargs -I {} -a - /usr/sbin/runuser -c 'go install {}' "$adm" < /home/"$adm"/.config/drop/go-packages
 fi
 
+if [ -f /home/"$adm"/.config/drop/js-packages ]; then
+  xargs -I {} -a - /usr/sbin/runuser -c 'npm install -g {}' "$adm" < /home/"$adm"/.config/drop/js-packages
+fi
+
 if [ -f /home/"$adm"/.config/drop/repositories ]; then
   xargs -I {} -a - /usr/sbin/runuser -c 'ghq get {}' "$adm" < /home/"$adm"/.config/drop/repositories
 fi
