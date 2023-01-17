@@ -30,6 +30,10 @@ if [ -f /home/"$adm"/.config/drop/apps ]; then
   /usr/sbin/runuser -u "$adm" -- xargs -I {} bash -c 'curl -Lo /tmp/app {} && pv /tmp/app | bsdtar -xC ~'"$adm"'/.cache/drop/apps -f -' < /home/"$adm"/.config/drop/apps
 fi
 
+if /usr/sbin/runuser -u "$adm" -- which rustup-init; then
+  /usr/sbin/runuser -u "$adm" -- rustup-init --no-modify-path -y
+fi
+
 if [ -f /home/"$adm"/.config/drop/go-packages ]; then
   xargs -I {} -a - /usr/sbin/runuser -c 'go install {}' "$adm" < /home/"$adm"/.config/drop/go-packages
 fi
