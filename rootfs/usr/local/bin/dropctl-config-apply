@@ -34,6 +34,10 @@ if /usr/sbin/runuser -u "$adm" -- which rustup-init; then
   /usr/sbin/runuser -u "$adm" -- rustup-init --no-modify-path -y
 fi
 
+if [ -f /home/"$adm"/.config/drop/crates ]; then
+  xargs -I {} -a - /usr/sbin/runuser -c 'cargo install {}' "$adm" < /home/"$adm"/.config/drop/crates
+fi
+
 if [ -f /home/"$adm"/.config/drop/go-packages ]; then
   xargs -I {} -a - /usr/sbin/runuser -c 'go install {}' "$adm" < /home/"$adm"/.config/drop/go-packages
 fi
