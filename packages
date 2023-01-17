@@ -10,6 +10,7 @@ linux-image-5.10.0-20-amd64
 locales
 pulseaudio
 pv
+suckless-tools
 sway
 sway-backgrounds
 xwayland
