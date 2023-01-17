@@ -15,6 +15,10 @@ if [ -d /home/"$adm"/.config/drop/rootfs ]; then
   /usr/sbin/runuser -u "$adm" -- cp -RTf /home/"$adm"/.config/drop/rootfs /
 fi
 
+if [ -f /home/"$adm"/.config/drop/rootfs/etc/locale.gen ]; then
+  locale-gen
+fi
+
 if [ -f /home/"$adm"/.config/drop/packages ]; then
   xargs -a - apt-get install -y < /home/"$adm"/.config/drop/packages
 fi
