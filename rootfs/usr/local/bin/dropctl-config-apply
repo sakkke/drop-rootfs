@@ -39,7 +39,14 @@ if [ -x /home/"$adm"/.cache/drop/executables/rustup-init ]; then
 fi
 
 if [ -f /home/"$adm"/.config/drop/crates ]; then
-  xargs -I {} -a - /usr/sbin/runuser -c 'cargo install {}' "$adm" < /home/"$adm"/.config/drop/crates
+  mem_total="$(grep MemTotal: /proc/meminfo | awk '{ print $2 }')"
+  eight_gib=8589934592
+
+  if ((mem_total > eight_gib)); then
+    xargs -I {} -a - /usr/sbin/runuser -c 'cargo install {}' "$adm" < /home/"$adm"/.config/drop/crates
+  else
+    echo I: Skip crate installation
+  fi
 fi
 
 if [ -f /home/"$adm"/.config/drop/go-packages ]; then
