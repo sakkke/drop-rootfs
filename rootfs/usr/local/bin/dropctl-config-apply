@@ -5,7 +5,7 @@ set -euxo pipefail
 config="$1"
 adm="$2"
 
-/usr/sbin/runuser -u "$adm" -- git clone "$config" /home/"$adm"/.config/drop
+/usr/sbin/runuser -u "$adm" -- git clone -q "$config" /home/"$adm"/.config/drop
 
 if [ -d /home/"$adm"/.config/drop/dotfiles ]; then
   /usr/sbin/runuser -u "$adm" -- cp -RTfs /home/"$adm"/.config/drop/dotfiles /home/"$adm"
@@ -16,26 +16,26 @@ if [ -d /home/"$adm"/.config/drop/rootfs ]; then
 fi
 
 if [ -f /home/"$adm"/.config/drop/rootfs/etc/locale.gen ]; then
-  /usr/sbin/locale-gen
+  /usr/sbin/locale-gen > /dev/null
 fi
 
 if [ -f /home/"$adm"/.config/drop/packages ]; then
-  xargs -a - apt-get install -y < /home/"$adm"/.config/drop/packages
+  xargs -a - apt-get install -qqy < /home/"$adm"/.config/drop/packages
 fi
 
 if [ -f /home/"$adm"/.config/drop/executables ]; then
   /usr/sbin/runuser -u "$adm" -- mkdir -p /home/"$adm"/.cache/drop/executables
-  /usr/sbin/runuser -u "$adm" -- bash -c 'cd ~'"$adm"'/.cache/drop/executables && xargs -n 1 curl -LO' < /home/"$adm"/.config/drop/executables
+  /usr/sbin/runuser -u "$adm" -- bash -c 'cd ~'"$adm"'/.cache/drop/executables && xargs -n 1 curl -#LO' < /home/"$adm"/.config/drop/executables
   /usr/sbin/runuser -u "$adm" -- chmod +x /home/"$adm"/.cache/drop/executables/*
 fi
 
 if [ -f /home/"$adm"/.config/drop/apps ]; then
   /usr/sbin/runuser -u "$adm" -- mkdir -p /home/"$adm"/.cache/drop/apps
-  /usr/sbin/runuser -u "$adm" -- xargs -I {} bash -c 'curl -Lo /tmp/app {} && pv /tmp/app | bsdtar -xC ~'"$adm"'/.cache/drop/apps -f -' < /home/"$adm"/.config/drop/apps
+  /usr/sbin/runuser -u "$adm" -- xargs -I {} bash -c 'curl -#Lo /tmp/app {} && pv /tmp/app | bsdtar -xC ~'"$adm"'/.cache/drop/apps -f -' < /home/"$adm"/.config/drop/apps
 fi
 
 if [ -x /home/"$adm"/.cache/drop/executables/rustup-init ]; then
-  /usr/sbin/runuser -u "$adm" -- /home/"$adm"/.cache/drop/executables/rustup-init --no-modify-path -y
+  /usr/sbin/runuser -u "$adm" -- /home/"$adm"/.cache/drop/executables/rustup-init --no-modify-path -qy
 fi
 
 if [ -f /home/"$adm"/.config/drop/crates ]; then
@@ -43,7 +43,7 @@ if [ -f /home/"$adm"/.config/drop/crates ]; then
   eight_gib=8589934592
 
   if ((mem_total > eight_gib)); then
-    xargs -I {} -a - /usr/sbin/runuser -c 'cargo install {}' "$adm" < /home/"$adm"/.config/drop/crates
+    xargs -I {} -a - /usr/sbin/runuser -c 'cargo install -q {}' "$adm" < /home/"$adm"/.config/drop/crates
   else
     echo I: Skip crate installation
   fi
@@ -58,7 +58,7 @@ if [ -f /home/"$adm"/.config/drop/js-packages ]; then
 fi
 
 if [ -f /home/"$adm"/.config/drop/python-packages ]; then
-  xargs -I {} -a - /usr/sbin/runuser -c 'pip install {}' "$adm" < /home/"$adm"/.config/drop/python-packages
+  xargs -I {} -a - /usr/sbin/runuser -c 'pip install -q {}' "$adm" < /home/"$adm"/.config/drop/python-packages
 fi
 
 if [ -f /home/"$adm"/.config/drop/pipx-packages ]; then
@@ -66,5 +66,5 @@ if [ -f /home/"$adm"/.config/drop/pipx-packages ]; then
 fi
 
 if [ -f /home/"$adm"/.config/drop/repositories ]; then
-  xargs -I {} -a - /usr/sbin/runuser -c 'ghq get {}' "$adm" < /home/"$adm"/.config/drop/repositories
+  xargs -I {} -a - /usr/sbin/runuser -c 'ghq get -s {}' "$adm" < /home/"$adm"/.config/drop/repositories
 fi
